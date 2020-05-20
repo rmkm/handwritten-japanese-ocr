@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """
 Handwritten Japanese OCR demo program
  Based on a sample program from OpenVINO 2020.2 (handwritten-japanese-recognition-demo.py)
