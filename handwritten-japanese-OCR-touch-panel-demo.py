@@ -40,8 +40,6 @@ LOOP_ACTIVE = False
 # Canvas size is the same as the input size of the text detection model (to ommit resizing before text area inference)
 _canvas_x = 1280
 _canvas_y = 768
-#_canvas_x = 1920
-#_canvas_y = 1080
 
 
 # -----------------------------------------------------------------
@@ -263,7 +261,7 @@ g_UIState = 0       # 0: normal UI, 1: wait for a click
 g_clickedFlag = False
 g_recogFlag   = False
 
-g_threshold = 50
+g_threshold = 25
 g_canvas = []
 
 def putJapaneseText(img, x, y, text, size=32):
@@ -305,7 +303,13 @@ def drawUI(image):
 
 def clearCanvas():
     global g_canvas
+    top = 200
+    width = 200
     g_canvas = np.full((_canvas_y, _canvas_x, 3), [255,255,255], np.uint8)
+    cv2.rectangle(g_canvas, (48, top), (100, top+2*width), (230,230,230), -1, cv2.LINE_AA)
+    cv2.line(g_canvas, (50, top), (_canvas_x-50, top), (178,55,20), 3, cv2.LINE_AA)
+    cv2.line(g_canvas, (50, top+width), (_canvas_x-50, top+width), (178,55,20), 3, cv2.LINE_AA)
+    cv2.line(g_canvas, (50, top+2*width), (_canvas_x-50, top+2*width), (178,55,20), 3, cv2.LINE_AA)
 
 
 def dispCanvas():
@@ -327,7 +331,7 @@ def onMouse(event, x, y, flags, param):
     global g_canvas
 
     #black_pen = lambda x1, y1, x2, y2: cv2.line(g_canvas, (x1, y1), (x2, y2), (  0,  0,  0), thickness=12)
-    black_pen = lambda x1, y1, x2, y2: cv2.line(g_canvas, (x1, y1), (x2, y2), (32, 32, 32), thickness=10)
+    black_pen = lambda x1, y1, x2, y2: cv2.line(g_canvas, (x1, y1), (x2, y2), (32, 32, 32), thickness=6, lineType=cv2.LINE_AA)
     #white_pen = lambda x1, y1, x2, y2: cv2.line(g_canvas, (x1, y1), (x2, y2), (255,255,255), thickness=36)
     white_pen = lambda x1, y1, x2, y2: cv2.line(g_canvas, (x1, y1), (x2, y2), (255,255,255), thickness=36)
 
@@ -476,6 +480,7 @@ def main():
         #        canvas2 = putJapaneseText(canvas2, most_left[0], most_left[1], result[0])
         #        cv2.imshow('canvas', canvas2)
         #        cv2.waitKey(1)
+        ## End
 
         print('text detection')
         img = cv2.resize(g_canvas, (_canvas_x, _canvas_y))
